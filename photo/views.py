@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import CreateView,DeleteView, UpdateView
 from django.shortcuts import redirect
+
 # Create your views here.
 from .models import Photo
 
@@ -11,12 +12,13 @@ def photo_list(request):
 
 class PhotoUploadView(CreateView):
     model = Photo
-    fields = ['photo', 'text']
+    fields = ['photo', 'text']  # 작성자(author), 작성시간(created)
     template_name = 'photo/upload.html'
-
-    def form_vaild(self, form):
+    
+    def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         if form.is_valid():
+            # 데이터가 올바르다면
             form.instance.save()
             return redirect('/')
         else:
