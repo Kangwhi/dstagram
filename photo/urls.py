@@ -5,5 +5,6 @@ from .views import *
 app_name = "photo"  # 네임스페이스
 urlpatterns = [
     path('', photo_list, name='photo_list'),
-    path('upload/', PhotoUploadView.as_view(), name='photo_upload')
+    path('upload/', PhotoUploadView.as_view(), name='photo_upload'),
+    path('delete/<int:pk>/', PhotoDeleteView.as_view(), name='photo_delete')
 ]
