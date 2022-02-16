@@ -52,7 +52,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",  # NOTE: django-debug-toolbar
 ]
 # NOTE: django-debug-toolbar
-INTERNAL_IPS = [
+INTERNAL_IPS = [ 
     "127.0.0.1"
 ]
 
@@ -61,7 +61,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
