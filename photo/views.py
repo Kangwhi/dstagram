@@ -1,40 +1,45 @@
 from django.shortcuts import render
-from django.views.generic.edit import CreateView,DeleteView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.shortcuts import redirect
 
 # Create your views here.
 from .models import Photo
 
+
 def photo_list(request):
     # 보여줄 사진 데이터
     photos = Photo.objects.all()
-    return render(request, 'photo/list.html', {'photos':photos})
+    return render(request, "photo/list.html", {"photos": photos})
+
 
 class PhotoUploadView(CreateView):
     model = Photo
-    fields = ['photo', 'text']  # 작성자(author), 작성시간(created)
-    template_name = 'photo/upload.html'
-    
+    fields = ["photo", "text"]  # 작성자(author), 작성시간(created)
+    template_name = "photo/upload.html"
+
     def form_valid(self, form):
         form.instance.author_id = self.request.user.id
         if form.is_valid():
             # 데이터가 올바르다면
             form.instance.save()
-            return redirect('/')
+            return redirect("/")
         else:
-            return self.render_to_response({'form':form})
+            return self.render_to_response({"form": form})
+
 
 class PhotoDeleteView(DeleteView):
     model = Photo
-    success_url = '/'
-    template_name = 'photo/delete.html'
+    success_url = "/"
+    template_name = "photo/delete.html"
+
 
 class PhotoUpdateView(UpdateView):
     model = Photo
-    fields = ['photo', 'text']
-    template_name = 'photo/update.html'
+    fields = ["photo", "text"]
+    template_name = "photo/update.html"
+
 
 class PhotoDetailView(DetailView):
     model = Photo
-    template_name='photo/detail.html'
+    template_name = "photo/detail.html"
