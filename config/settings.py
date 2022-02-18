@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "photo",
     "accounts",
+    "disqus",
+    "django.contrib.sites",
     "debug_toolbar",  # NOTE: django-debug-toolbar
 ]
 
@@ -133,4 +135,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # reverse_lazy 함수를 사용해서 다른 뷰를 적용할 수 있다.
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
+
+DISQUS_WEBSITE_SHORTNAME = "hwistagram"
+SITE_ID = 1
