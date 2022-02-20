@@ -13,8 +13,13 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import dj_database_url
 import sys
-sys.modules['django.utils.six.moves.urllib.parse'] = __import__('six.moves.urllib_parse', fromlist=['urlencode'])
-sys.modules['django.utils.six.moves.urllib.request'] = __import__('six.moves.urllib_request', fromlist=['urlopen'])
+
+sys.modules["django.utils.six.moves.urllib.parse"] = __import__(
+    "six.moves.urllib_parse", fromlist=["urlencode"]
+)
+sys.modules["django.utils.six.moves.urllib.request"] = __import__(
+    "six.moves.urllib_request", fromlist=["urlopen"]
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,9 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-y2^$m23@t7(uny!6hz2djws^7sc5mdr5s^p*)uyu=lkusi7k#p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".herokuapp.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".herokuapp.com"]
 
 
 # Application definition
@@ -129,11 +134,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = "static/"
-# STATIC_ROOT = BASE_DIR / "staticfiles"
-
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docsw.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -144,6 +144,34 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # reverse_lazy 함수를 사용해서 다른 뷰를 적용할 수 있다.
 LOGIN_REDIRECT_URL = "/"
 
+# DISQUS 세팅
 DISQUS_WEBSITE_SHORTNAME = "hwistagram"
 SITE_ID = 1
-# %%
+
+# AWS 세팅 (static)
+from .secret_keys import *
+
+AWS_ACCESS_KEY_ID = MY_AWS_ACCESS_KEY_ID  # Key 아이디
+AWS_SECRET_ACCESS_KEY = MY_AWS_SECRET_ACCESS_KEY  # Key 시크릿
+AWS_REGION = "ap-northeast-2"  # AWS 지역
+AWS_STORAGE_BUCKET_NAME = "dstagram-django3-whi"  # 버킷 이름
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (
+    AWS_STORAGE_BUCKET_NAME,
+    AWS_REGION,
+)  # static files, images files 접근 주소
+
+AWS_S3_FILE_OVERWRITE = False  # 파일 덮어쓰기 방지 기능
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}  # 파일 다운할 때 캐시 유효기간
+AWS_DEFAULT_ACL = "public-read"  # S3 파일 잘 가져갈 수 있게 함
+AWS_LOCATION = "static"  # 버킷안에 어느 폴더에 업로드 할건지?
+
+STATIC_URL = "http://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = (
+    "storages.backends.s3boto3.S3Boto3Storage"  # static 파일 저장 시 어떤 기법을 사용할 지?
+)
+
+# AWS 세팅 (media)
+DEFAULT_FILE_STORAGE = "config.s3media.MediaStorage"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "/media"
