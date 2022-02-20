@@ -22,7 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("photo.urls")),
     path("accounts/", include("accounts.urls")),
-    path("__debug__/", include("debug_toolbar.urls")),
+    # path("__debug__/", include("debug_toolbar.urls")),
 ]
 
 # Debug 모드를 사용하므로 static 기능을 사용한다. 실제로 서버작업을 할 때는 불필요한 작업

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-y2^$m23@t7(uny!6hz2djws^7sc5mdr5s^p*)uyu=lkusi7k#p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "herokuapp.com"]
 
 
 # Application definition
@@ -41,18 +42,19 @@ INSTALLED_APPS = [
     "accounts",
     "disqus",
     "django.contrib.sites",
-    "debug_toolbar",  # NOTE: django-debug-toolbar
+    # "debug_toolbar",  # NOTE: django-debug-toolbar
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",  # NOTE: django-debug-toolbar
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",  # NOTE: django-debug-toolbar
 ]
 # NOTE: django-debug-toolbar
 INTERNAL_IPS = ["127.0.0.1"]
@@ -88,6 +90,7 @@ DATABASES = {
     }
 }
 
+DATABASES["default"].update(dj_database_url.config(conn_max_age=500))
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -139,3 +142,4 @@ LOGIN_REDIRECT_URL = "/"
 
 DISQUS_WEBSITE_SHORTNAME = "hwistagram"
 SITE_ID = 1
+# %%
