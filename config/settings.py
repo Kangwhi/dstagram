@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import dj_database_url
 import sys
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 sys.modules["django.utils.six.moves.urllib.parse"] = __import__(
     "six.moves.urllib_parse", fromlist=["urlencode"]
@@ -148,11 +152,8 @@ LOGIN_REDIRECT_URL = "/"
 DISQUS_WEBSITE_SHORTNAME = "hwistagram"
 SITE_ID = 1
 
-# AWS 세팅 (static)
-from .secret_keys import *
-
-AWS_ACCESS_KEY_ID = MY_AWS_ACCESS_KEY_ID  # Key 아이디
-AWS_SECRET_ACCESS_KEY = MY_AWS_SECRET_ACCESS_KEY  # Key 시크릿
+AWS_ACCESS_KEY_ID = os.getenv('MY_AWS_ACCESS_KEY_ID')  # Key 아이디
+AWS_SECRET_ACCESS_KEY = os.getenv('MY_AWS_SECRET_ACCESS_KEY')  # Key 시크릿
 AWS_REGION = "ap-northeast-2"  # AWS 지역
 AWS_STORAGE_BUCKET_NAME = "dstagram-django3-whi"  # 버킷 이름
 AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (
